@@ -13,6 +13,8 @@ with 'Dist::Zilla::Role::InstallTool'; # after PodWeaver
 
 =head1 DESCRIPTION
 
+generate the README from C<main_module> by L<Pod::Text>
+
 The code is mostly a copy-paste of L<Module::Install::ReadmeFromPod>
  
 =cut
