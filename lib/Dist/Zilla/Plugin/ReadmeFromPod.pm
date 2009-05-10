@@ -3,6 +3,7 @@ package Dist::Zilla::Plugin::ReadmeFromPod;
 # ABSTRACT: Automatically convert POD to a README for Dist::Zilla
 
 use Moose;
+use Moose::Autobox;
 #with 'Dist::Zilla::Role::FileGatherer';
 with 'Dist::Zilla::Role::InstallTool'; # after PodWeaver
 
