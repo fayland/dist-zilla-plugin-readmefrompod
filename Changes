@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-Plugin-ReadmeFromPod
 
+0.03    2009.05.10
+        can override README if it already has [Readme]
+
 0.02	2009.4.5
         fix VERSION
 

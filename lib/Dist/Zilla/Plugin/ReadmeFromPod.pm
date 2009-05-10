@@ -35,12 +35,18 @@ sub setup_installer {
   $parser->output_fh( $out_fh );
   $parser->parse_string_document( $mmcontent );
 
-  my $file = Dist::Zilla::File::InMemory->new({
-    content => $content,
-    name    => 'README',
-  });
-
-  $self->add_file($file);
+  my $file = $self->zilla->files->grep( sub { $_->name =~ m{README\z} } )->head;
+  if ( $file ) {
+    $file->content( $content );
+    $self->zilla->log("Override README from [ReadmeFromPod]");
+  } else {
+    $file = Dist::Zilla::File::InMemory->new({
+        content => $content,
+        name    => 'README',
+    });
+    $self->add_file($file);
+  }
+  
   return;
 }
 
