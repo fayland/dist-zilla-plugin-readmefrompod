@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-Plugin-ReadmeFromPod
 
+0.04    2009.06.16
+        require Pod::Text 3.13
+
 0.03    2009.05.10
         can override README if it already has [Readme]
 
