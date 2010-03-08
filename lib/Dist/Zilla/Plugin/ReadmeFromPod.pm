@@ -25,12 +25,10 @@ sub setup_installer {
 
   require Dist::Zilla::File::InMemory;
 
-  require IO::Scalar;
-  my $content;
-  my $out_fh = new IO::Scalar \$content;
+  open(my $out_fh, ">", \my $content);
 
   my $mmcontent = $self->zilla->main_module->content;
-  
+
   require Pod::Text;
   my $parser = Pod::Text->new();
   $parser->output_fh( $out_fh );

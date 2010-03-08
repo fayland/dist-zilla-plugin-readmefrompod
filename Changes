@@ -1,5 +1,10 @@
 Revision history for Dist-Zilla-Plugin-ReadmeFromPod
 
+0.05
+        Using IO::Scalar instead of Perl's built-in open() to open
+        in-memory filehandles breaks in-memory Pod::Text processing of
+        POD documents containing UTF-8 (who knows why) (avar)
+
 0.04    2009.06.16
         require Pod::Text 3.13
 
