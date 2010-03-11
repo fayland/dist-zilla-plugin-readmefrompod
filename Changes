@@ -1,6 +1,6 @@
 Revision history for Dist-Zilla-Plugin-ReadmeFromPod
 
-0.05
+0.05    2010.03.11
         Using IO::Scalar instead of Perl's built-in open() to open
         in-memory filehandles breaks in-memory Pod::Text processing of
         POD documents containing UTF-8 (who knows why) (avar)
@@ -11,7 +11,7 @@ Revision history for Dist-Zilla-Plugin-ReadmeFromPod
 0.03    2009.05.10
         can override README if it already has [Readme]
 
-0.02	2009.4.5
+0.02	    2009.4.5
         fix VERSION
 
 0.01    2009.4.5
