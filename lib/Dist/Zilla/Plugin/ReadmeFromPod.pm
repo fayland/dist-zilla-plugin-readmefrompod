@@ -16,7 +16,7 @@ with 'Dist::Zilla::Role::InstallTool'; # after PodWeaver
 
 =head1 DESCRIPTION
 
-generate the README from C<main_module> by L<Pod::Readme>
+generate the README from C<main_module> by L<Pod::Text>
 
 The code is mostly a copy-paste of L<Module::Install::ReadmeFromPod>
  
@@ -32,8 +32,8 @@ sub setup_installer {
 
   my $mmcontent = $self->zilla->main_module->content;
 
-  require Pod::Readme;
-  my $parser = Pod::Readme->new();
+  require Pod::Text;
+  my $parser = Pod::Text->new();
   $parser->output_fh( $out_fh );
   $parser->parse_string_document( $mmcontent );
 
