@@ -1,5 +1,9 @@
 Revision history for Dist-Zilla-Plugin-ReadmeFromPod
 
+0.07    2010.04.11
+
+        Bumped for re-release to CPAN (was deleted)
+
 0.06    2010.03.11
         Using in-memory filehandles as commited in 0.05 doesn't work
         for some unknown reason. There's a TODO test for this
