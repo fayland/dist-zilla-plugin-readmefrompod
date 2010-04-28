@@ -67,7 +67,14 @@ my ($in_memory, $in_string, $in_file);
     my $parser = Pod::Text->new();
     $parser->output_fh( $out_fh );
     $parser->parse_string_document( $mmcontent );
-    $out_fh->sync();
+    eval { $out_fh->sync(); 1 } or do {
+        if ($@ =~ '^IO::Handle::sync not implemented on this architecture') {
+            $out_fh->flush();
+        }
+        else {
+            die;
+        }
+    };
     close $out_fh;
 
     # Do *not* convert this to something that doesn't use open() for
