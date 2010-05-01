@@ -1,5 +1,10 @@
 Revision history for Dist-Zilla-Plugin-ReadmeFromPod
 
+0.10    2010.05.01
+
+        Re-release due to Makefile.PL breakage caused by Dist::Zilla
+        FAIL: http://github.com/rjbs/dist-zilla/commit/2e47b6c205
+
 0.09    2010.04.28
 
         Integrate patch by Mark Gardner <mjgardner@cpan.org> to make
