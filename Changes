@@ -4,6 +4,9 @@ Revision history for Dist-Zilla-Plugin-ReadmeFromPod
 
         - Convert this distro to use @AVAR
 
+        - Remove PodWeaver use in favor of hardcoded POD and improve
+          the documentation.
+
 0.10    2010.05.01
 
         Re-release due to Makefile.PL breakage caused by Dist::Zilla
