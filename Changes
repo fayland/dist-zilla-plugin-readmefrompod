@@ -2,6 +2,8 @@ Revision history for Dist-Zilla-Plugin-ReadmeFromPod
 
 {{$NEXT}}
 
+0.12 2010-06-08 16:47:39
+
    - Improvements by Kent Fredric to make the POD extraction
      saner. The need for intermediary files was eliminited, which
      allowed us to get rid of a call to sync(), which fails on
