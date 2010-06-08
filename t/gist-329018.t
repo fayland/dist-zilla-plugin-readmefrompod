@@ -10,7 +10,8 @@ use IO::Handle;
 use Test::More 'no_plan';
 #use Data::Dump 'dump';
 #use Devel::Peek;
-#use Encode;
+use Encode qw( encode );
+use IO::Scalar;
 
 # Output, on my system:
 my $test_output = <<'END';
@@ -40,13 +41,12 @@ like($mmcontent, qr/^=cut/m, "Got all the POD");
 
 my ($in_memory, $in_string, $in_file);
 {
-    open( my $out_fh, ">", \my $content );
+    my $out_fh = IO::Scalar->new( \my $content ); 
     #diag "Memory handle IO layer: " . dump [ PerlIO::get_layers($out_fh) ];
     my $parser = Pod::Text->new();
     $parser->output_fh($out_fh);
     $parser->parse_string_document($mmcontent);
-
-    $in_memory = $content;
+    $in_memory = encode($parser->{encoding}, $content);
 }
 
 {
@@ -56,7 +56,7 @@ my ($in_memory, $in_string, $in_file);
     #Encode::_utf8_on($content);
     #Dump($content);
 
-    $in_string = $content;
+    $in_string = encode($parser->{encoding}, $content);
 }
 
 {
@@ -88,14 +88,8 @@ my ($in_memory, $in_string, $in_file);
     $in_file = $content;
 }
 
-TODO: {
-    local $TODO = "In-memory filehandle is truncated for some reason";
-    is_deeply([split /\n/, $in_memory], [split /\n/, $in_file], "writing to in-memory open() == writing to temporary file");
-}
-TODO: {
-    local $TODO = "In-string doesn't truncate but fails at encoding";
-    is_deeply([split /\n/, $in_string], [split /\n/, $in_file], "writing to in-string == writing to temporary file");
-}
+is_deeply([split /\n/, $in_memory], [split /\n/, $in_file], "writing to in-memory open() == writing to temporary file");
+is_deeply([split /\n/, $in_string], [split /\n/, $in_file], "writing to in-string == writing to temporary file");
 
 __DATA__
 

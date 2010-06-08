@@ -2,6 +2,11 @@ Revision history for Dist-Zilla-Plugin-ReadmeFromPod
 
 {{$NEXT}}
 
+        Resolve issue with writing to strings, eliminating the need for 
+        intermediary file, and thus, eliminating the need to call sync(),
+        which fails on Win32. ( Was fixed already in the test, but not in 
+        the actual module ... ) ( Kent Fredric )
+
 0.11 2010-05-26 12:53:27
 
         - Convert this distro to use @AVAR
