@@ -62,6 +62,7 @@ my ($in_memory, $in_string, $in_file);
 {
     my $dir = tempdir( CLEANUP => 1 );
     my ($out_fh, $filename) = tempfile( DIR => $dir );
+    binmode( $out_fh, ':utf8' );
     #diag "Tempfile IO layer: " . dump [ PerlIO::get_layers($out_fh) ];
 
     my $parser = Pod::Text->new();
