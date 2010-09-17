@@ -2,6 +2,10 @@ Revision history for Dist-Zilla-Plugin-ReadmeFromPod
 
 {{$NEXT}}
 
+0.13 2010-09-17 16:26:40
+
+   - Fixed failing test as per [CPAN RT: #60569] (sscaffidi)
+
 0.12 2010-06-08 16:47:39
 
    - Improvements by Kent Fredric to make the POD extraction
