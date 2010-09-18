@@ -2,6 +2,11 @@ Revision history for Dist-Zilla-Plugin-ReadmeFromPod
 
 {{$NEXT}}
 
+0.14 2010-09-17 20:38:55
+
+    - Set the META repository url to my github repo, as suggested
+      by avar. github user: Hercynium (sscaffidi)
+
 0.13 2010-09-17 16:26:40
 
    - Fixed failing test as per [CPAN RT: #60569] (sscaffidi)
