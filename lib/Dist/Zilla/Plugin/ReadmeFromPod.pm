@@ -4,7 +4,7 @@ use Moose;
 use Moose::Autobox;
 use IO::Handle;
 use Encode qw( encode );
-with 'Dist::Zilla::Role::FileGatherer';
+with 'Dist::Zilla::Role::InstallTool'; # after PodWeaver
 
 has filename => (
     is => 'ro',
@@ -19,35 +19,39 @@ sub _build_filename {
 }
 
 sub gather_files {
-  my ($self, $arg) = @_;
+    my ($self, $arg) = @_;
 
-  require Dist::Zilla::File::FromCode;
+    my $mmcontent = $self->zilla->files->grep(sub {
+        $_->name eq $self->filename
+    })->head->content;
 
-  my $file = Dist::Zilla::File::FromCode->new({
-    code => sub {
-        my $mmcontent = $self->zilla->files->grep(sub {
-            $_->name eq $self->filename
-        })->head->content;
+    require Pod::Text;
+    my $parser = Pod::Text->new();
+    $parser->output_string( \my $input_content );
+    $parser->parse_string_document( $mmcontent );
 
-      require Pod::Text;
-      my $parser = Pod::Text->new();
-      $parser->output_string( \my $input_content );
-      $parser->parse_string_document( $mmcontent );
-
-      my $content;
-      if( defined $parser->{encoding} ){
+    my $content;
+    if( defined $parser->{encoding} ){
         $content = encode( $parser->{encoding} , $input_content );
-      } else {
-         $content = $input_content;
-      }
+    } else {
+        $content = $input_content;
+    }
 
-      return $content;
-    },
-    name => 'README',
-  });
-  $self->add_file($file);
+    my $file = $self->zilla->files->grep( sub { $_->name =~ m{README\z} } )->head;
 
-  return;
+    if ( $file ) {
+        $file->content( $content );
+        $self->zilla->log("Override README from [ReadmeFromPod]");
+    } else {
+        require Dist::Zilla::File::InMemory;
+        $file = Dist::Zilla::File::InMemory->new({
+            content => $content,
+            name    => 'README',
+        });
+        $self->add_file($file);
+    }
+
+    return;
 }
 
 __PACKAGE__->meta->make_immutable;
@@ -67,12 +71,6 @@ Dist::Zilla::Plugin::ReadmeFromPod - Automatically convert POD to a README for D
     # or
     [ReadmeFromPod]
     filename = lib/XXX.pod
-
-    # to fix "[DZ] attempt to add README multiple times; added by: @Filter/Readme
-    [@Filter]
-    remove = Readme
-
-    [ReadmeFromPod]
 
 =head1 DESCRIPTION
 
