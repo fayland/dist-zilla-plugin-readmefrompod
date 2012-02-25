@@ -1,5 +1,8 @@
 Revision history for Dist-Zilla-Plugin-ReadmeFromPod
 
+0.06    2012.02.25
+        apply patch from mitakaa (RT 75272)
+
 0.05    2010.03.11
         Using IO::Scalar instead of Perl's built-in open() to open
         in-memory filehandles breaks in-memory Pod::Text processing of

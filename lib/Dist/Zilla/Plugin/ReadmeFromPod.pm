@@ -4,48 +4,72 @@ package Dist::Zilla::Plugin::ReadmeFromPod;
 
 use Moose;
 use Moose::Autobox;
-#with 'Dist::Zilla::Role::FileGatherer';
-with 'Dist::Zilla::Role::InstallTool'; # after PodWeaver
+with 'Dist::Zilla::Role::FileGatherer';
+
+has filename => (
+    is => 'ro',
+    isa => 'Str',
+    lazy => 1,
+    builder => '_build_filename',
+);
+
+sub _build_filename {
+    my $self = shift;
+    $self->zilla->main_module->name;
+}
 
 =head1 SYNOPSIS
- 
+
     # dist.ini
+    [ReadmeFromPod]
+
+    # or
+    [ReadmeFromPod]
+    filename = lib/XXX.pod
+
+    # to fix "[DZ] attempt to add README multiple times; added by: @Filter/Readme
+    [@Filter]
+    remove = Readme
+
     [ReadmeFromPod]
 
 =head1 DESCRIPTION
 
-generate the README from C<main_module> by L<Pod::Text>
+generate the README from C<main_module> (or specified) by L<Pod::Text>
 
 The code is mostly a copy-paste of L<Module::Install::ReadmeFromPod>
- 
+
 =cut
 
-sub setup_installer {
+sub gather_files {
   my ($self, $arg) = @_;
 
-  require Dist::Zilla::File::InMemory;
+  require Dist::Zilla::File::FromCode;
 
-  open(my $out_fh, ">", \my $content);
+  my $file = Dist::Zilla::File::FromCode->new({
+    code => sub {
+        my $mmcontent = $self->zilla->files->grep(sub {
+            $_->name eq $self->filename
+        })->head->content;
 
-  my $mmcontent = $self->zilla->main_module->content;
+      require Pod::Text;
+      my $parser = Pod::Text->new();
+      $parser->output_string( \my $input_content );
+      $parser->parse_string_document( $mmcontent );
 
-  require Pod::Text;
-  my $parser = Pod::Text->new();
-  $parser->output_fh( $out_fh );
-  $parser->parse_string_document( $mmcontent );
+      my $content;
+      if( defined $parser->{encoding} ){
+        $content = encode( $parser->{encoding} , $input_content );
+      } else {
+         $content = $input_content;
+      }
 
-  my $file = $self->zilla->files->grep( sub { $_->name =~ m{README\z} } )->head;
-  if ( $file ) {
-    $file->content( $content );
-    $self->zilla->log("Override README from [ReadmeFromPod]");
-  } else {
-    $file = Dist::Zilla::File::InMemory->new({
-        content => $content,
-        name    => 'README',
-    });
-    $self->add_file($file);
-  }
-  
+      return $content;
+    },
+    name => 'README',
+  });
+  $self->add_file($file);
+
   return;
 }
 
