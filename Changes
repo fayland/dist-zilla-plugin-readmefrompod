@@ -1,7 +1,8 @@
 Revision history for Dist-Zilla-Plugin-ReadmeFromPod
 
-0.15    2012.02.25
-        apply patch from mitakaa (RT 75272)
+{{$NEXT}}
+
+    - apply patch (filename attr) from mitakaa (RT 75272)
 
 0.14 2010-09-17 20:38:55
 

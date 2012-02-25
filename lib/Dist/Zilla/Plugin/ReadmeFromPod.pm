@@ -18,7 +18,7 @@ sub _build_filename {
     $self->zilla->main_module->name;
 }
 
-sub gather_files {
+sub setup_installer {
     my ($self, $arg) = @_;
 
     my $mmcontent = $self->zilla->files->grep(sub {
