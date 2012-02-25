@@ -1,9 +1,9 @@
 package Dist::Zilla::Plugin::ReadmeFromPod;
 
-# ABSTRACT: Automatically convert POD to a README for Dist::Zilla
-
 use Moose;
 use Moose::Autobox;
+use IO::Handle;
+use Encode qw( encode );
 with 'Dist::Zilla::Role::FileGatherer';
 
 has filename => (
@@ -17,29 +17,6 @@ sub _build_filename {
     my $self = shift;
     $self->zilla->main_module->name;
 }
-
-=head1 SYNOPSIS
-
-    # dist.ini
-    [ReadmeFromPod]
-
-    # or
-    [ReadmeFromPod]
-    filename = lib/XXX.pod
-
-    # to fix "[DZ] attempt to add README multiple times; added by: @Filter/Readme
-    [@Filter]
-    remove = Readme
-
-    [ReadmeFromPod]
-
-=head1 DESCRIPTION
-
-generate the README from C<main_module> (or specified) by L<Pod::Text>
-
-The code is mostly a copy-paste of L<Module::Install::ReadmeFromPod>
-
-=cut
 
 sub gather_files {
   my ($self, $arg) = @_;
@@ -74,6 +51,42 @@ sub gather_files {
 }
 
 __PACKAGE__->meta->make_immutable;
-no Moose;
 
-1;
+=head1 NAME
+
+Dist::Zilla::Plugin::ReadmeFromPod - Automatically convert POD to a README for Dist::Zilla
+
+=head1 SYNOPSIS
+
+    # dist.ini
+    [ReadmeFromPod]
+
+    # or
+    [ReadmeFromPod]
+    filename = lib/XXX.pod
+
+    # to fix "[DZ] attempt to add README multiple times; added by: @Filter/Readme
+    [@Filter]
+    remove = Readme
+
+    [ReadmeFromPod]
+
+=head1 DESCRIPTION
+
+generate the README from C<main_module> (or specified) by L<Pod::Text>
+
+The code is mostly a copy-paste of L<Module::Install::ReadmeFromPod>
+
+=head1 AUTHORS
+
+Fayland Lam <fayland@gmail.com> and E<AElig>var ArnfjE<ouml>rE<eth> Bjarmason <avar@cpan.org>
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright 2010 Fayland Lam <fayland@gmail.com> and E<AElig>var
+ArnfjE<ouml>rE<eth> Bjarmason <avar@cpan.org>
+
+This program is free software, you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=cut
