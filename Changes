@@ -55,7 +55,6 @@ Revision history for Dist-Zilla-Plugin-ReadmeFromPod
         Using in-memory filehandles as commited in 0.05 doesn't work
         for some unknown reason. There's a TODO test for this
         t/gist-329018.t now taken from http://gist.github.com/329018
->>>>>>> 1921bd8551093f4102ff191de9b4b5ecc2d66e04
 
 0.05    2010.03.11
         Using IO::Scalar instead of Perl's built-in open() to open

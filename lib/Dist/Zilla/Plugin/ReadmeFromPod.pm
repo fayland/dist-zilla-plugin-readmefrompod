@@ -51,6 +51,9 @@ sub gather_files {
 }
 
 __PACKAGE__->meta->make_immutable;
+no Moose;
+
+1;
 
 =head1 NAME
 
