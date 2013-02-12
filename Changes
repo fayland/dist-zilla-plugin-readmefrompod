@@ -2,7 +2,10 @@ Revision history for Dist-Zilla-Plugin-ReadmeFromPod
 
 {{$NEXT}}
 
+0.18 2013-02-12 11:08:05
+
     - apply patch (filename attr) from mitakaa (RT 75272)
+    - regex ^ to match root README
 
 0.14 2010-09-17 20:38:55
 
