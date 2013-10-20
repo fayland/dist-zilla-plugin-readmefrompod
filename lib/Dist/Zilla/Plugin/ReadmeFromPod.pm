@@ -2,8 +2,6 @@ package Dist::Zilla::Plugin::ReadmeFromPod;
 
 use Moose;
 use Moose::Autobox;
-use IO::Handle;
-use Encode qw( encode );
 with 'Dist::Zilla::Role::InstallTool' => { -version => 5 }; # after PodWeaver
 
 has filename => (
