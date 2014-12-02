@@ -66,8 +66,6 @@ sub setup_installer {
 
     $prf->run();
 
-    # TODO: readme accessor should get the name from the $prf->default_readme_file
-
     my $name = $self->readme // $prf->default_readme_file;
     my $file = $self->zilla->files->grep( sub { $_->name eq $name } )->head;
 
