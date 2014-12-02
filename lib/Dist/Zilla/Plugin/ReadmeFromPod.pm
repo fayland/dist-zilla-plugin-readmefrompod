@@ -4,6 +4,8 @@ use Moose;
 use Moose::Autobox;
 with 'Dist::Zilla::Role::InstallTool' => { -version => 5 }; # after PodWeaver
 
+use IO::String;
+
 has filename => (
     is => 'ro',
     isa => 'Str',
@@ -16,20 +18,58 @@ sub _build_filename {
     $self->zilla->main_module->name;
 }
 
+has type => (
+    is => 'ro',
+    isa => 'Str',
+    default => 'text',
+);
+
+my %FORMATS = (
+    'html'     => { class => 'Pod::Simple::HTML' },
+    'markdown' => { class => 'Pod::Markdown'     },
+    'pod'      => { class => undef },
+    'rtf'      => { class => 'Pod::Simple::RTF' },
+    'text'     => { class => 'Pod::Simple::Text' },
+);
+
+has pod_class => (
+    is => 'ro',
+    isa => 'Str',
+    lazy => 1,
+    builder => '_build_pod_class',
+);
+
+sub _build_pod_class {
+  my $self = shift;
+  my $fmt  = $FORMATS{$self->type}
+    or die "Unsupported type: " . $self->type;
+  $fmt->{class};
+}
+
+has readme => (
+    is => 'ro',
+    isa => 'Str',
+);
+
 sub setup_installer {
     my ($self, $arg) = @_;
 
-    my $mmcontent = $self->zilla->files->grep(sub {
-        $_->name eq $self->filename
-    })->head->content;
+    require Pod::Readme;
 
-    require Pod::Text;
-    my $parser = Pod::Text->new();
-    $parser->parse_characters(1);
-    $parser->output_string( \my $content );
-    $parser->parse_string_document( $mmcontent );
+    my $content;
 
-    my $file = $self->zilla->files->grep( sub { $_->name =~ m{^README\z} } )->head;
+    my $prf = Pod::Readme->new(
+      input_file        => $self->filename,
+      translate_to_fh   => IO::String->new($content),
+      translation_class => $self->pod_class
+    );
+
+    $prf->run();
+
+    # TODO: readme accessor should get the name from the $prf->default_readme_file
+
+    my $name = $self->readme // $prf->default_readme_file;
+    my $file = $self->zilla->files->grep( sub { $_->name eq $name } )->head;
 
     if ( $file ) {
         $file->content( $content );
@@ -38,7 +78,7 @@ sub setup_installer {
         require Dist::Zilla::File::InMemory;
         $file = Dist::Zilla::File::InMemory->new({
             content => $content,
-            name    => 'README',
+            name    => $name,
         });
         $self->add_file($file);
     }
@@ -66,9 +106,7 @@ Dist::Zilla::Plugin::ReadmeFromPod - Automatically convert POD to a README for D
 
 =head1 DESCRIPTION
 
-generate the README from C<main_module> (or specified) by L<Pod::Text>
-
-The code is mostly a copy-paste of L<Module::Install::ReadmeFromPod>
+generate the README from C<main_module> (or specified) by L<Pod::Readme>
 
 =head1 AUTHORS
 
