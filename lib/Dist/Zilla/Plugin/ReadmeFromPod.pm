@@ -42,7 +42,7 @@ has pod_class => (
 sub _build_pod_class {
   my $self = shift;
   my $fmt  = $FORMATS{$self->type}
-    or die "Unsupported type: " . $self->type;
+    or $self->log_fatal("Unsupported type: " . $self->type);
   $fmt->{class};
 }
 
