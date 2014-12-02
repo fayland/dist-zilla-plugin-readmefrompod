@@ -93,7 +93,7 @@ no Moose;
 
 =head1 NAME
 
-Dist::Zilla::Plugin::ReadmeFromPod - Automatically convert POD to a README for Dist::Zilla
+Dist::Zilla::Plugin::ReadmeFromPod - dzil plugin to generate README from POD
 
 =head1 SYNOPSIS
 
@@ -103,10 +103,13 @@ Dist::Zilla::Plugin::ReadmeFromPod - Automatically convert POD to a README for D
     # or
     [ReadmeFromPod]
     filename = lib/XXX.pod
+    type = markdown
+    readme = READTHIS.md
 
 =head1 DESCRIPTION
 
-generate the README from C<main_module> (or specified) by L<Pod::Readme>
+This plugin generates the F<README> from C<main_module> (or specified)
+by L<Pod::Readme>.
 
 =head1 AUTHORS
 
