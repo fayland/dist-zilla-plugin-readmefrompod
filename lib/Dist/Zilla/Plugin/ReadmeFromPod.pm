@@ -111,12 +111,42 @@ Dist::Zilla::Plugin::ReadmeFromPod - dzil plugin to generate README from POD
 This plugin generates the F<README> from C<main_module> (or specified)
 by L<Pod::Readme>.
 
-Note: if you are using a plugin bundle that includes
-L<Dist::Zilla::Plugin::Readme>, and you are generating a file called
-something other than F<README>, then you need to filter that plugin
+=head2 Options
+
+The following options are supported:
+
+=head3 C<filename>
+
+The name of the file to extract the F<README> from. This defaults to
+the main module of the distribution.
+
+=head3 C<type>
+
+The type of F<README> you want to generate. This defaults to "text".
+
+Other options are "html", "pod", "markdown" and "rtf".
+
+=head3 C<pod_class>
+
+This is the L<Pod::Simple> class used to translate a file to the
+format you want. The default is based on the L</type> setting, but if
+you want to generate an alternative type, you can set this option
+instead.
+
+=head3 C<readme>
+
+The name of the file, which defaults to one based on the L</type>.
+
+=head2 Conflicts with Other Plugins
+
+You should not be using another plugin to manage F<README> files,
+especially if you are generating a file with a different type.
+
+If you are using a plugin bundle such as C<@Basic> that includes
+L<Dist::Zilla::Plugin::Readme>, then you need to filter that plugin
 from the bundle.
 
-You do so by replacing
+You do so by replacing the bundle
 
   [@Basic]
 
@@ -128,11 +158,15 @@ with
 
 =head1 AUTHORS
 
-Fayland Lam <fayland@gmail.com> and E<AElig>var ArnfjE<ouml>rE<eth> Bjarmason <avar@cpan.org>
+Fayland Lam <fayland@gmail.com> and
+E<AElig>var ArnfjE<ouml>rE<eth> Bjarmason <avar@cpan.org>
+
+Robert Rothenberg <rrwo@cpan.org> modified this plugin to use
+L<Pod::Readme>.
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2010 Fayland Lam <fayland@gmail.com> and E<AElig>var
+Copyright 2010-2014 Fayland Lam <fayland@gmail.com> and E<AElig>var
 ArnfjE<ouml>rE<eth> Bjarmason <avar@cpan.org>
 
 This program is free software, you can redistribute it and/or modify
