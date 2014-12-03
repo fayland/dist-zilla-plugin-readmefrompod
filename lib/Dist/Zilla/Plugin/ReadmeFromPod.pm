@@ -111,6 +111,21 @@ Dist::Zilla::Plugin::ReadmeFromPod - dzil plugin to generate README from POD
 This plugin generates the F<README> from C<main_module> (or specified)
 by L<Pod::Readme>.
 
+Note: if you are using a plugin bundle that includes
+L<Dist::Zilla::Plugin::Readme>, and you are generating a file called
+something other than F<README>, then you need to filter that plugin
+from the bundle.
+
+You do so by replacing
+
+  [@Basic]
+
+with
+
+  [@Filter]
+  -bundle = @Basic
+  -remove = Readme
+
 =head1 AUTHORS
 
 Fayland Lam <fayland@gmail.com> and E<AElig>var ArnfjE<ouml>rE<eth> Bjarmason <avar@cpan.org>
