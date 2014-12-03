@@ -77,9 +77,10 @@ sub setup_installer {
         require Dist::Zilla::File::InMemory;
         $file = Dist::Zilla::File::InMemory->new({
             content => $content,
-            name    => $name,
+            name    => "${name}", # stringify, as it may be Path::Tiny
         });
         $self->add_file($file);
+
     }
 
     return;
