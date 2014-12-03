@@ -34,7 +34,7 @@ my %FORMATS = (
 
 has pod_class => (
     is => 'ro',
-    isa => 'Str',
+    isa => 'Maybe[Str]',
     lazy => 1,
     builder => '_build_pod_class',
 );
@@ -61,7 +61,8 @@ sub setup_installer {
     my $prf = Pod::Readme->new(
       input_file        => $self->filename,
       translate_to_fh   => IO::String->new($content),
-      translation_class => $self->pod_class
+      translation_class => $self->pod_class,
+      zilla             => $self->zilla,
     );
 
     $prf->run();
