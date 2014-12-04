@@ -3,8 +3,10 @@ package Dist::Zilla::Plugin::ReadmeFromPod;
 use Moose;
 use Moose::Autobox;
 with 'Dist::Zilla::Role::InstallTool' => { -version => 5 }; # after PodWeaver
+with 'Dist::Zilla::Role::FilePruner';
 
 use IO::String;
+use Pod::Readme;
 
 has filename => (
     is => 'ro',
@@ -51,25 +53,57 @@ has readme => (
     isa => 'Str',
 );
 
+sub prune_files {
+    my ($self) = @_;
+    my $readme_file = $self->zilla->files->grep( sub { $_->name =~ m{^README\z} } )->head;
+    if ($readme_file and $readme_file->added_by =~ /Dist::Zilla::Plugin::Readme/) {
+        $self->log_debug([ 'pruning %s', $readme_file->name ]);
+        $self->zilla->prune_file($readme_file);
+    }
+}
+
 sub setup_installer {
     my ($self, $arg) = @_;
 
-    require Pod::Readme;
+    my $pod_class = $self->pod_class;
+    my $readme_name = $self->readme;
+
+    ## guess pod_class from exisiting file, like GitHub will have README.md created
+    my $readme_file;
+    if (not $readme_name) {
+        my %ext = (
+            'md'       => 'markdown',
+            'mkdn'     => 'markdown',
+            'markdown' => 'markdown',
+            'html'     => 'html',
+            'htm'      => 'html',
+            'rtf'      => 'rtf',
+            'txt'      => 'txt',
+        );
+        foreach my $e (keys %ext) {
+            $readme_file = $self->zilla->root->file("README.$e");
+            if (-e "$readme_file") {
+                $pod_class = $FORMATS{ $ext{$e} }->{class};
+                last;
+            }
+        }
+    }
 
     my $content;
-
     my $prf = Pod::Readme->new(
       input_file        => $self->filename,
       translate_to_fh   => IO::String->new($content),
-      translation_class => $self->pod_class,
+      translation_class => $pod_class,
       zilla             => $self->zilla,
     );
-
     $prf->run();
 
-    my $name = $self->readme // $prf->default_readme_file;
-    my $file = $self->zilla->files->grep( sub { $_->name eq $name } )->head;
+    if ($readme_file) {
+        return $readme_file->spew(iomode => '>:raw', $content);
+    }
 
+    $readme_name ||= $prf->default_readme_file;
+    my $file = $self->zilla->files->grep( sub { $_->name eq $readme_name } )->head;
     if ( $file ) {
         $file->content( $content );
         $self->zilla->log("Override README from [ReadmeFromPod]");
@@ -77,17 +111,16 @@ sub setup_installer {
         require Dist::Zilla::File::InMemory;
         $file = Dist::Zilla::File::InMemory->new({
             content => $content,
-            name    => "${name}", # stringify, as it may be Path::Tiny
+            name    => "${readme_name}", # stringify, as it may be Path::Tiny
         });
         $self->add_file($file);
-
     }
 
     return;
 }
 
-__PACKAGE__->meta->make_immutable;
 no Moose;
+__PACKAGE__->meta->make_immutable;
 
 1;
 
@@ -139,22 +172,7 @@ The name of the file, which defaults to one based on the L</type>.
 
 =head2 Conflicts with Other Plugins
 
-You should not be using another plugin to manage F<README> files,
-especially if you are generating a file with a different type.
-
-If you are using a plugin bundle such as C<@Basic> that includes
-L<Dist::Zilla::Plugin::Readme>, then you need to filter that plugin
-from the bundle.
-
-You do so by replacing the bundle
-
-  [@Basic]
-
-with
-
-  [@Filter]
-  -bundle = @Basic
-  -remove = Readme
+We will remove the README created by L<Dist::Zilla::Plugin::Readme> automatically.
 
 =head1 AUTHORS
 

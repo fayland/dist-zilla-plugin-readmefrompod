@@ -1,6 +1,7 @@
 Revision history for Dist-Zilla-Plugin-ReadmeFromPod
 
 {{$NEXT}}
+    - use Pod::Readme (Robert Rothenberg)
 
 0.21 2013-11-04 15:54:58
 
