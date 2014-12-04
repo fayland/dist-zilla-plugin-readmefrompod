@@ -79,6 +79,8 @@ sub setup_installer {
             'htm'      => 'html',
             'rtf'      => 'rtf',
             'txt'      => 'txt',
+            ''         => 'pod',
+            'pod'      => 'pod'
         );
         foreach my $e (keys %ext) {
             $readme_file = $self->zilla->root->file("README.$e");
