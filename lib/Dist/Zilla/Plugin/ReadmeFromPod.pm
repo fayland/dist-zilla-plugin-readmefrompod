@@ -97,6 +97,7 @@ sub setup_installer {
       input_file        => $self->filename,
       translate_to_fh   => IO::String->new($content),
       translation_class => $pod_class,
+      force             => 1,
       zilla             => $self->zilla,
     );
     $prf->run();
