@@ -1,6 +1,8 @@
 Revision history for Dist-Zilla-Plugin-ReadmeFromPod
 
 {{$NEXT}}
+
+0.22_03 2014-12-05 10:12:58
     - fix issues
 
 0.22_01 2014-12-04 09:52:02
