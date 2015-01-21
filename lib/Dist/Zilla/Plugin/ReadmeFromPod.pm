@@ -1,7 +1,7 @@
 package Dist::Zilla::Plugin::ReadmeFromPod;
 
 use Moose;
-use Moose::Autobox;
+use List::Util 1.33 qw( first );
 with 'Dist::Zilla::Role::InstallTool' => { -version => 5 }; # after PodWeaver
 with 'Dist::Zilla::Role::FilePruner';
 
@@ -55,7 +55,7 @@ has readme => (
 
 sub prune_files {
     my ($self) = @_;
-    my $readme_file = $self->zilla->files->grep( sub { $_->name =~ m{^README\z} } )->head;
+    my $readme_file = first { $_->name =~ m{^README\z} } @{ $self->zilla->files };
     if ($readme_file and $readme_file->added_by =~ /Dist::Zilla::Plugin::Readme/) {
         $self->log_debug([ 'pruning %s', $readme_file->name ]);
         $self->zilla->prune_file($readme_file);
@@ -107,7 +107,7 @@ sub setup_installer {
     }
 
     $readme_name ||= $prf->default_readme_file;
-    my $file = $self->zilla->files->grep( sub { $_->name eq $readme_name } )->head;
+    my $file = first { $_->name eq $readme_name } @{ $self->zilla->files };
     if ( $file ) {
         $file->content( $content );
         $self->zilla->log("Override README from [ReadmeFromPod]");
