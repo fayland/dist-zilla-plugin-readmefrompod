@@ -2,6 +2,9 @@ Revision history for Dist-Zilla-Plugin-ReadmeFromPod
 
 {{$NEXT}}
 
+0.32 2015-02-12 22:24:09
+    - no code changes
+
 0.31 2015-02-12 09:53:04
     - Remove dependency on Moose::Autobox (GH#4, Kent Fredric)
 
