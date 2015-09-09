@@ -78,8 +78,8 @@ sub setup_installer {
             'html'     => 'html',
             'htm'      => 'html',
             'rtf'      => 'rtf',
-            'txt'      => 'txt',
-            ''         => 'pod',
+            'txt'      => 'text',
+            ''         => 'text',
             'pod'      => 'pod'
         );
         foreach my $e (keys %ext) {
