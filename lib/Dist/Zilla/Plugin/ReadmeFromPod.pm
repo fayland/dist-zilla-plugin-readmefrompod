@@ -17,7 +17,10 @@ has filename => (
 
 sub _build_filename {
     my $self = shift;
-    $self->zilla->main_module->name;
+    # copied from Dist::Zilla::Plugin::ReadmeAnyFromPod
+    my $pm = $self->zilla->main_module->name;
+    (my $pod = $pm) =~ s/\.pm$/\.pod/;
+    return -e $pod ? $pod : $pm;
 }
 
 has type => (
