@@ -1,6 +1,7 @@
 Revision history for Dist-Zilla-Plugin-ReadmeFromPod
 
 {{$NEXT}}
+    - Updated to use Path::Tiny API instead of Path::Class (diegok)
 
 0.34 2016-10-08 09:38:53
     - Auto-detect pod file if present (GH#6, polettix)

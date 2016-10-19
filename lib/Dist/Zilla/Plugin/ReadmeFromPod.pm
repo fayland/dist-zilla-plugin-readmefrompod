@@ -86,7 +86,7 @@ sub setup_installer {
             'pod'      => 'pod'
         );
         foreach my $e (keys %ext) {
-            my $test_readme_file = $self->zilla->root->file($e ? "README.$e" : 'README');
+            my $test_readme_file = $self->zilla->root->child($e ? "README.$e" : 'README');
             if (-e "$test_readme_file") {
                 $readme_file = $test_readme_file;
                 $pod_class = $FORMATS{ $ext{$e} }->{class};
