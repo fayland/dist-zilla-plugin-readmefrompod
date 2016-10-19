@@ -106,7 +106,7 @@ sub setup_installer {
     $prf->run();
 
     if ($readme_file) {
-        return $readme_file->spew(iomode => '>:raw', $content);
+        return $readme_file->spew_raw($content);
     }
 
     $readme_name ||= $prf->default_readme_file;
