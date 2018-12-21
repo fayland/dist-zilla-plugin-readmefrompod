@@ -6,7 +6,7 @@ with 'Dist::Zilla::Role::InstallTool' => { -version => 5 }; # after PodWeaver
 with 'Dist::Zilla::Role::FilePruner';
 
 use IO::String;
-use Pod::Readme;
+use Pod::Readme 'v1.2.0';
 use Path::Tiny 0.004;
 
 has filename => (
@@ -31,6 +31,8 @@ has type => (
 );
 
 my %FORMATS = (
+    'gfm'      => { class => 'Pod::Markdown::Github' },
+    'github'   => { class => 'Pod::Markdown::Github' },
     'html'     => { class => 'Pod::Simple::HTML' },
     'markdown' => { class => 'Pod::Markdown'     },
     'pod'      => { class => undef },
