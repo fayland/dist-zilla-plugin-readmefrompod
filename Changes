@@ -1,6 +1,7 @@
 Revision history for Dist-Zilla-Plugin-ReadmeFromPod
 
 {{$NEXT}}
+    - fix path for Dist::Zilla v6+
 
 0.35 2016-10-19 22:51:42
     - Updated to use Path::Tiny API instead of Path::Class (diegok)
