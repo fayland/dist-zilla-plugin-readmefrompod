@@ -6,7 +6,7 @@ with 'Dist::Zilla::Role::InstallTool' => { -version => 5 }; # after PodWeaver
 with 'Dist::Zilla::Role::FilePruner';
 
 use IO::String;
-use Pod::Readme 'v1.2.0';
+use Pod::Readme v1.2.0;
 use Path::Tiny 0.004;
 
 has filename => (
