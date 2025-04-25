@@ -120,9 +120,11 @@ sub _create_readme {
         }
     }
 
+    my $source = first { $_->name eq $self->filename } @{ $self->zilla->files };
+
     my $content;
     my $prf = Pod::Readme->new(
-      input_file        => $self->filename,
+      input_fh          => IO::String->new( $source->content ),
       translate_to_fh   => IO::String->new($content),
       translation_class => $pod_class,
       force             => 1,
