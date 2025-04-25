@@ -220,7 +220,7 @@ Some parts of the code were borrowed from L<Dist::Zilla::Plugin::ReadmeAnyFromPo
 
 =head1 LICENSE AND COPYRIGHT
 
-Copyright 2010-2014 Fayland Lam <fayland@gmail.com> and E<AElig>var
+Copyright 2010-2025 Fayland Lam <fayland@gmail.com> and E<AElig>var
 ArnfjE<ouml>rE<eth> Bjarmason <avar@cpan.org>
 
 This program is free software, you can redistribute it and/or modify

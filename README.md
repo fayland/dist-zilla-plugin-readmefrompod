@@ -61,7 +61,7 @@ Some parts of the code were borrowed from [Dist::Zilla::Plugin::ReadmeAnyFromPod
 
 # LICENSE AND COPYRIGHT
 
-Copyright 2010-2014 Fayland Lam <fayland@gmail.com> and Ævar
+Copyright 2010-2025 Fayland Lam <fayland@gmail.com> and Ævar
 Arnfjörð Bjarmason <avar@cpan.org>
 
 This program is free software, you can redistribute it and/or modify
