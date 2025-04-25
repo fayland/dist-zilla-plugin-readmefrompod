@@ -178,33 +178,33 @@ Dist::Zilla::Plugin::ReadmeFromPod - dzil plugin to generate README from POD
 This plugin generates the F<README> from C<main_module> (or specified)
 by L<Pod::Readme>.
 
-=head2 Options
+=head1 ATTRIBUTES
 
 The following options are supported:
 
-=head3 C<filename>
+=head2 filename
 
 The name of the file to extract the F<README> from. This defaults to
 the main module of the distribution.
 
-=head3 C<type>
+=head2 type
 
 The type of F<README> you want to generate. This defaults to "text".
 
 Other options are "html", "pod", "markdown" and "rtf".
 
-=head3 C<pod_class>
+=head2 pod_class
 
 This is the L<Pod::Simple> class used to translate a file to the
 format you want. The default is based on the L</type> setting, but if
 you want to generate an alternative type, you can set this option
 instead.
 
-=head3 C<readme>
+=head2 readme
 
 The name of the file, which defaults to one based on the L</type>.
 
-=head3 C<phase>
+=head2 phase
 
 This indicates what phase to build the README file from. It is either C<build> (the default) or C<release>.
 
