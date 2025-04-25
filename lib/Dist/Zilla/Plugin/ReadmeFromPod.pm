@@ -6,6 +6,7 @@ with 'Dist::Zilla::Role::InstallTool' => { -version => 5 }; # after PodWeaver
 with 'Dist::Zilla::Role::FilePruner';
 
 use IO::String;
+use Moose::Util::TypeConstraints qw( enum );
 use Pod::Readme v1.2.0;
 use Path::Tiny 0.004;
 
@@ -24,12 +25,6 @@ sub _build_filename {
     return -e $pod ? $pod : $pm;
 }
 
-has type => (
-    is => 'ro',
-    isa => 'Str',
-    default => 'text',
-);
-
 my %FORMATS = (
     'gfm'      => { class => 'Pod::Markdown::Github' },
     'github'   => { class => 'Pod::Markdown::Github' },
@@ -38,6 +33,12 @@ my %FORMATS = (
     'pod'      => { class => undef },
     'rtf'      => { class => 'Pod::Simple::RTF' },
     'text'     => { class => 'Pod::Simple::Text' },
+);
+
+has type => (
+    is => 'ro',
+    isa => enum( [ keys %FORMATS ] ),
+    default => 'text',
 );
 
 has pod_class => (
