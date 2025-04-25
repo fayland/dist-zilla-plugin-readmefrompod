@@ -1,5 +1,7 @@
 package Dist::Zilla::Plugin::ReadmeFromPod;
 
+use v5.10.1;
+
 use Moose;
 use List::Util 1.33 qw( first );
 with 'Dist::Zilla::Role::InstallTool' => { -version => 5 }; # after PodWeaver
