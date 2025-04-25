@@ -44,9 +44,9 @@ instead.
 
 The name of the file, which defaults to one based on the ["type"](#type).
 
-## Conflicts with Other Plugins
+### `phase`
 
-We will remove the README created by [Dist::Zilla::Plugin::Readme](https://metacpan.org/pod/Dist%3A%3AZilla%3A%3APlugin%3A%3AReadme) automatically.
+This indicates what phase to build the README file from. It is either `build` (the default) or `release`.
 
 # AUTHORS
 
@@ -55,6 +55,8 @@ Fayland Lam <fayland@gmail.com> and
 
 Robert Rothenberg <rrwo@cpan.org> modified this plugin to use
 [Pod::Readme](https://metacpan.org/pod/Pod%3A%3AReadme).
+
+Some parts of the code were borrowed from [Dist::Zilla::Plugin::ReadmeAnyFromPod](https://metacpan.org/pod/Dist%3A%3AZilla%3A%3APlugin%3A%3AReadmeAnyFromPod).
 
 # LICENSE AND COPYRIGHT
 

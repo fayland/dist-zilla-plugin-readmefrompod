@@ -3,14 +3,17 @@ package Dist::Zilla::Plugin::ReadmeFromPod;
 use v5.10.1;
 
 use Moose;
-use List::Util 1.33 qw( first );
-with 'Dist::Zilla::Role::InstallTool' => { -version => 5 }; # after PodWeaver
-with 'Dist::Zilla::Role::FilePruner';
 
+use List::Util 1.33 qw( first none );
 use IO::String;
 use Moose::Util::TypeConstraints qw( enum );
 use Pod::Readme v1.2.0;
 use Path::Tiny 0.004;
+
+with qw( Dist::Zilla::Role::AfterBuild
+  Dist::Zilla::Role::AfterRelease
+  Dist::Zilla::Role::FilePruner
+);
 
 has filename => (
     is => 'ro',
@@ -62,6 +65,13 @@ has readme => (
     isa => 'Str',
 );
 
+has phase => (
+    is      => 'ro',
+    lazy    => 1,
+    isa     => enum( [qw(build release)] ),
+    default => 'build',
+);
+
 sub prune_files {
     my ($self) = @_;
     my $readme_file = first { $_->name =~ m{^README\z} } @{ $self->zilla->files };
@@ -71,8 +81,17 @@ sub prune_files {
     }
 }
 
-sub setup_installer {
-    my ($self, $arg) = @_;
+sub after_build {
+    my ($self) = @_;
+    $self->_create_readme if $self->phase eq 'build';
+}
+sub after_release {
+    my ($self) = @_;
+    $self->_create_readme if $self->phase eq 'release';
+}
+
+sub _create_readme {
+    my ($self) = @_;
 
     my $pod_class = $self->pod_class;
     my $readme_name = $self->readme;
@@ -150,6 +169,7 @@ Dist::Zilla::Plugin::ReadmeFromPod - dzil plugin to generate README from POD
     filename = lib/XXX.pod
     type = markdown
     readme = READTHIS.md
+    phase = build
 
 =head1 DESCRIPTION
 
@@ -182,9 +202,9 @@ instead.
 
 The name of the file, which defaults to one based on the L</type>.
 
-=head2 Conflicts with Other Plugins
+=head3 C<phase>
 
-We will remove the README created by L<Dist::Zilla::Plugin::Readme> automatically.
+This indicates what phase to build the README file from. It is either C<build> (the default) or C<release>.
 
 =head1 AUTHORS
 
@@ -193,6 +213,8 @@ E<AElig>var ArnfjE<ouml>rE<eth> Bjarmason <avar@cpan.org>
 
 Robert Rothenberg <rrwo@cpan.org> modified this plugin to use
 L<Pod::Readme>.
+
+Some parts of the code were borrowed from L<Dist::Zilla::Plugin::ReadmeAnyFromPod>.
 
 =head1 LICENSE AND COPYRIGHT
 
