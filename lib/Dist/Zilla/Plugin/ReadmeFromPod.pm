@@ -10,7 +10,9 @@ use Moose::Util::TypeConstraints qw( enum );
 use Pod::Readme v1.2.0;
 use Path::Tiny 0.004;
 
-with qw( Dist::Zilla::Role::AfterBuild
+with qw(
+  Dist::Zilla::Role::FileInjector
+  Dist::Zilla::Role::AfterBuild
   Dist::Zilla::Role::AfterRelease
   Dist::Zilla::Role::FilePruner
 );
